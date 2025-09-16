@@ -1,0 +1,34 @@
+stages:
+  - test
+  - build
+
+# ─── 1. Unit + Integration Tests ───────────────────────────────
+unit-tests:
+  image: node:20
+  stage: test
+  script:
+    - cd vite-project
+    - npm install
+    - npm run test
+  artifacts:
+    paths:
+      - vite-project/coverage/
+    when: always
+  only:
+    - main
+    - merge_requests
+
+# ─── 2. Build & Push Docker Image ──────────────────────────────
+build-frontend:
+  image: docker:latest
+  services:
+    - docker:dind
+  stage: build
+  variables:
+    IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+  script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
+    - docker build -t "$IMAGE_TAG" -f ./vite-project/Dockerfile ./vite-project
+    - docker push "$IMAGE_TAG"
+  only:
+    - main

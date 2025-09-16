@@ -1,0 +1,12 @@
+.venv
+.git
+.idea
+gender_submission.csv
+__pycache__
+Plots
+.gitignore
+.gitlab-ci.yml
+accuraycomparing.txt
+README.md
+main.py
+Models

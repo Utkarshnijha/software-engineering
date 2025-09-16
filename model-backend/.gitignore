@@ -1,0 +1,31 @@
+#Vertual Environment
+.venv/
+
+# Byte-compiled / cache files
+__pycache__/
+*.py[cod]
+*.so
+.pytest_cache
+
+# VS Code settings
+.vscode/
+
+# Mac system files
+.DS_Store
+
+#Pickel Files
+Models
+*.pkl
+
+#Data
+Data
+.idea
+
+#Plotting
+Plot
+Plots
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.svg

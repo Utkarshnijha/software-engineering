@@ -1,0 +1,20 @@
+stages:          # List of stages for jobs, and their order of execution
+  - build
+  - test
+
+build:
+  stage: build
+  image: docker:latest
+  services:
+    - docker:dind
+  script:
+    - docker build -t models-backend .
+
+test:
+  stage: test
+  image: docker:latest
+  services:
+    - docker:dind
+  script:
+    - docker build -t model-backend-test .
+    - docker run --rm model-backend-test pytest Tests/

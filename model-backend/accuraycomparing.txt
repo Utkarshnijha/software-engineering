@@ -1,0 +1,7 @@
+Random Forest  86.76 our 82.24
+Decision Tree  86.76 our 84.61
+KNN  84.51 our 82.24
+Logistic Regression  78.56 our 78
+Linear SVC  78.23 our 76.17
+
+

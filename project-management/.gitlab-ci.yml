@@ -1,0 +1,13 @@
+image: alpine:latest
+
+stages:
+  - validate
+
+before_script:
+  - apk add --no-cache git
+  - git submodule update --init --recursive
+
+validate-job:
+  stage: validate
+  script:
+    - echo "✅ Repo and submodules validated. Ready to merge."

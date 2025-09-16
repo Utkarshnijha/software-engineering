@@ -1,0 +1,15 @@
+[submodule "model-backend"]
+	path = model-backend
+	url = https://mygit.th-deg.de/schober-teaching/student-projects/ain-23-software-engineering/ss-25/7up/model-backend.git
+	branch = main
+
+[submodule "web-backend"]
+	path = web-backend
+	url = https://mygit.th-deg.de/schober-teaching/student-projects/ain-23-software-engineering/ss-25/7up/web-backend.git
+	branch = main
+
+[submodule "web-frontend"]
+	path = web-frontend
+	url = https://mygit.th-deg.de/schober-teaching/student-projects/ain-23-software-engineering/ss-25/7up/web-frontend.git
+	branch = main
+

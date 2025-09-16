@@ -1,0 +1,84 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: Titanic_Databases
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - titanic-net
+
+  web-backend:
+    build: ./web-backend
+    container_name: web-backend
+    ports:
+      - "8001:8000"
+    depends_on:
+      - db
+    environment:
+      - Database_URL=postgresql://postgres:1234@db:5432/Titanic_Databases
+    entrypoint: ["sh", "-c", "sleep 10 && uvicorn main:app --host 0.0.0.0 --port 8000"]
+    networks:
+      - titanic-net
+
+  model-backend:
+    build:
+      context: ./model-backend
+    networks:
+      - titanic-net
+    volumes:
+      - model_data:/app/Models
+
+  web-frontend:
+    build:
+      context: ./web-frontend/vite-project
+      dockerfile: Dockerfile
+    ports:
+      - "8080"
+    networks:
+      - titanic-net
+    depends_on:
+      - web-backend
+
+  caddy:
+    build:
+      context: ./web-frontend/vite-project      
+      dockerfile: Dockerfile
+    image: titanic-frontend
+    container_name: caddy
+    ports:
+      - "8080:80"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile      
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - web-frontend
+      - web-backend
+      - model-backend
+    networks:
+      - titanic-net
+  # cypress:
+  #   image: cypress/included:12.17.4
+  #   depends_on:
+  #     - web-frontend
+  #     - web-backend
+  #     - model-backend
+  #   working_dir: /e2e
+  #   volumes:
+  #     - ./web-frontend:/e2e
+  #   command: ["npx", "cypress", "run"]
+
+volumes:
+  db_data:
+  model_data:
+  caddy_data:
+  caddy_config:
+
+networks:
+  titanic-net:
+    driver: bridge
